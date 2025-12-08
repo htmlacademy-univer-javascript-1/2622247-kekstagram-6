@@ -1,5 +1,3 @@
-import Pristine from '../vendor/pristine/pristine.min.js';
-
 const form = document.querySelector('.img-upload__form');
 const uploadInput = document.querySelector('.img-upload__input');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
