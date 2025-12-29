@@ -1,28 +1,27 @@
+import { renderPhotos } from './render-pictures.js';
+import { fetchPhotos } from './api.js';
+import './form.js';
+import { showFilterPanel, initPhotoFilters } from './filters.js';
 
-import { getData } from './api.js';
-import { initFilters } from './filters.js';
-import { initEffects } from './form-effects.js';
-import { initForm } from './validation.js';
-import { showErrorMessage } from './messages.js';
-
-// Инициализация при загрузке страницы
-const initApp = () => {
-  // Инициализация эффектов редактирования изображения
-  initEffects();
-
-  // Инициализация формы загрузки
-  initForm();
-
-  // Загрузка данных с сервера
-  getData()
-    .then((data) => {
-      // Инициализация фильтров с полученными данными
-      initFilters(data);
-    })
-    .catch((error) => {
-      showErrorMessage(`Ошибка загрузки фотографий: ${error.message}`);
-    });
+const showLoadingError = () => {
+  const errorContainer = document.createElement('div');
+  errorContainer.classList.add('data-error');
+  errorContainer.style.padding = '10px';
+  errorContainer.style.margin = '10px auto';
+  errorContainer.style.maxWidth = '600px';
+  errorContainer.style.background = '#ffdddd';
+  errorContainer.style.border = '1px solid #ff8888';
+  errorContainer.style.textAlign = 'center';
+  errorContainer.textContent = 'Не удалось загрузить фотографии. Попробуйте обновить страницу.';
+  document.body.insertAdjacentElement('afterbegin', errorContainer);
 };
 
-// Запуск приложения после загрузки DOM
-document.addEventListener('DOMContentLoaded', initApp);
+fetchPhotos()
+  .then((photos) => {
+    renderPhotos(photos);
+    showFilterPanel();
+    initPhotoFilters(photos);
+  })
+  .catch(showLoadingError);
+
+

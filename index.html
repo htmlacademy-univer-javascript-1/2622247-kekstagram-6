@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="./nouislider/nouislider.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="vendor/nouislider/nouislider.css">
   <title>Кекстаграм</title>
 </head>
 
@@ -35,7 +35,7 @@
 
             <!-- Изначальное состояние поля для загрузки изображения -->
             <fieldset class="img-upload__start">
-              <input type="file" id="upload-file" class="img-upload__input  visually-hidden" name="filename" required>
+              <input type="file" id="upload-file" class="img-upload__input  visually-hidden" name="filename" accept="image/jpeg, image/png" required>
               <label for="upload-file" class="img-upload__label  img-upload__control">Загрузить</label>
             </fieldset>
 
@@ -47,7 +47,7 @@
                   <!-- Изменение размера изображения -->
                   <fieldset class="img-upload__scale  scale">
                     <button type="button" class="scale__control  scale__control--smaller">Уменьшить</button>
-                    <input type="text" class="scale__control  scale__control--value" value="55%" title="Image Scale" name="scale" readonly>
+                    <input type="text" class="scale__control  scale__control--value" value="100%" title="Image Scale" name="scale" readonly>
                     <button type="button" class="scale__control  scale__control--bigger">Увеличить</button>
                   </fieldset>
 
@@ -117,7 +117,7 @@
                 <!-- Добавление хэш-тегов и комментария к изображению -->
                 <fieldset class="img-upload__text text">
                   <div class="img-upload__field-wrapper">
-                    <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег">
+                    <input class="text__hashtags" type="text" name="hashtags" placeholder="#ХэшТег">
                   </div>
                   <div class="img-upload__field-wrapper">
                     <textarea class="text__description" name="description" placeholder="Ваш комментарий..."></textarea>
@@ -155,7 +155,11 @@
           </div>
 
           <!-- Комментарии к изображению -->
-          <div class="social__comment-count">5 из <span class="comments-count">125</span> комментариев</div>
+          <div class="social__comment-count">
+            <span class="social__comment-shown-count">0</span> из
+            <span class="social__comment-total-count">0</span> комментариев
+          </div>
+
           <ul class="social__comments">
             <li class="social__comment">
               <img class="social__picture" src="img/avatar-4.svg" alt="Аватар комментатора фотографии" width="35" height="35">
@@ -232,12 +236,9 @@
   <template id="messages">
     <div class="img-upload__message  img-upload__message--loading">Загружаем...</div>
   </template>
-<script src="vendor/pristine/pristine.min.js"></script>
-<script src="vendor/nouislider/nouislider.min.js"></script>
-<script type="module" src="js/api.js"></script>
-<script type="module" src="js/form-effects.js"></script>
-<script type="module" src="js/messages.js"></script>
-<script type="module" src="js/validation.js"></script>
-<script type="module" src="js/main.js"></script>
+  <script src="vendor/pristine/pristine.min.js"></script>
+  <script src="vendor/nouislider/nouislider.js"></script>
+  <script src="./js/main.js" type="module"></script>
+
 </body>
 </html>

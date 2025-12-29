@@ -1,33 +1,23 @@
-const SERVER_URL = 'https://29.javascript.htmlacademy.pro/kekstagram';
+const apiEndpoint = 'https://29.javascript.htmlacademy.pro/kekstagram';
 
-const getData = async (onSuccess, onFail) => {
-  try {
-    const response = await fetch(`${SERVER_URL}/data`);
-    if (!response.ok) {
-      throw new Error(`${response.status} ${response.statusText}`);
-    }
-    const data = await response.json();
-    onSuccess(data);
-  } catch (error) {
-    onFail();
+const validateResponse = (serverResponse) => {
+  if (!serverResponse.ok) {
+    throw new Error(`HTTP ${serverResponse.status}`);
   }
+  return serverResponse;
 };
 
-const sendData = async (onSuccess, onFail, body) => {
-  try {
-    const response = await fetch(`${SERVER_URL}/`, {
-      method: 'POST',
-      body,
-    });
+const fetchPhotos = () =>
+  fetch(`${apiEndpoint}/data`)
+    .then(validateResponse)
+    .then((serverResponse) => serverResponse.json());
 
-    if (response.ok) {
-      onSuccess();
-    } else {
-      onFail();
-    }
-  } catch (error) {
-    onFail();
-  }
-};
+const uploadPhoto = (formData) =>
+  fetch(apiEndpoint, {
+    method: 'POST',
+    body: formData,
+  })
+    .then(validateResponse)
+    .then((serverResponse) => serverResponse.json());
 
-export { getData, sendData };
+export { fetchPhotos, uploadPhoto };

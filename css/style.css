@@ -832,13 +832,23 @@ main {
   margin: 0;
   margin-left: auto;
   min-width: 125px;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s;
+}
+
+.social__likes:hover {
+  color: #ff4747;
+}
+
+.social__likes--active {
+  color: #f48181;
 }
 
 .likes-count {
   position: relative;
   padding-left: 30px;
-
-  color: #f48181;
+}
 
   cursor: pointer;
 }
@@ -859,9 +869,14 @@ main {
 
   background-image: url("../img/sprite.png");
   background-repeat: no-repeat;
-
   background-position: -5px -56px;
   opacity: 0.5;
+  transition: opacity 0.2s, background-position 0.2s;
+}
+
+.social__likes--active .likes-count::before {
+  background-position: -5px -81px;
+  opacity: 1;
 }
 
 .likes-count:hover::before,
@@ -869,10 +884,8 @@ main {
   opacity: 1;
 }
 
-.likes-count:active::before,
-.likes-count--active::before {
+.likes-count:active::before {
   opacity: 1;
-  background-position: -5px -81px;
 }
 
 
@@ -1195,7 +1208,7 @@ main {
   top: 0;
   right: 0;
   bottom: 0;
-  z-index: 1;
+  z-index: 10;
 
   background-color: rgba(0, 0, 0, 0.8);
 }
@@ -1395,16 +1408,16 @@ main {
 .hidden {
   display: none;
 }
-.img-upload__field-wrapper--invalid input,
-.img-upload__field-wrapper--invalid textarea {
-  background-color: #965b5b;
-}
 
-.img-upload__error {
-  display: block;
-  color: #ff4141;
-  font-size: 12px;
-  margin-top: 4px;
-  font-weight: 500;
+.data-error {
+  z-index: 100;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  padding: 10px 3px;
+  font-size: 30px;
+  text-align: center;
+  background-color: red;
 }
 

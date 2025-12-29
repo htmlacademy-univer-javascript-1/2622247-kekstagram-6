@@ -1,45 +1,78 @@
-import { isEscapeKey } from './utils.js';
+import { isEscapeKey } from './util.js';
 
-const successTemplate = document.querySelector('#success').content.querySelector('.success');
-const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+const successTemplate = document
+  .querySelector('#success')
+  .content
+  .querySelector('.success');
 
-const showMessage = (template, buttonClass) => {
+const errorTemplate = document
+  .querySelector('#error')
+  .content
+  .querySelector('.error');
+
+let currentMessage = null;
+let keydownHandler = null;
+let clickHandler = null;
+
+const removeMessage = () => {
+  if (!currentMessage) {
+    return;
+  }
+
+  currentMessage.remove();
+
+  if (keydownHandler) {
+    document.removeEventListener('keydown', keydownHandler, true);
+  }
+  if (clickHandler) {
+    document.removeEventListener('click', clickHandler, true);
+  }
+
+  currentMessage = null;
+  keydownHandler = null;
+  clickHandler = null;
+};
+
+const showStatusMessage = (template) => {
+  removeMessage();
+
   const messageElement = template.cloneNode(true);
-  const button = messageElement.querySelector(buttonClass);
-
+  messageElement.style.zIndex = '10000';
   document.body.append(messageElement);
+  currentMessage = messageElement;
 
-  const onMessageEscKeydown = (evt) => {
-    if (isEscapeKey(evt)) {
+  keydownHandler = (event) => {
+    if (isEscapeKey(event)) {
+      event.preventDefault();
+      event.stopPropagation();
+      removeMessage();
+    }
+  };
+
+  clickHandler = (evt) => {
+    const messageContent = currentMessage
+      ? currentMessage.querySelector('.success__inner, .error__inner')
+      : null;
+
+    const closeButton = currentMessage
+      ? currentMessage.querySelector('button')
+      : null;
+
+    const isCloseBtn = evt.target === closeButton;
+    const isOutside = messageContent ? !messageContent.contains(event.target) : true;
+
+    if (isCloseBtn || isOutside) {
       evt.preventDefault();
       evt.stopPropagation();
-      button.click();
+      removeMessage();
     }
   };
 
-  const onOutsideClick = (evt) => {
-    if (evt.target === messageElement) {
-      button.click();
-    }
-  };
-
-  const closeMessage = () => {
-    messageElement.remove();
-    document.removeEventListener('keydown', onMessageEscKeydown);
-    document.removeEventListener('click', onOutsideClick);
-  };
-
-  button.addEventListener('click', closeMessage);
-  document.addEventListener('keydown', onMessageEscKeydown);
-  document.addEventListener('click', onOutsideClick);
+  document.addEventListener('keydown', keydownHandler, true);
+  document.addEventListener('click', clickHandler, true);
 };
 
-const showSuccessMessage = () => {
-  showMessage(successTemplate, '.success__button');
-};
+const showSuccessAlert = () => showStatusMessage(successTemplate);
+const showErrorAlert = () => showStatusMessage(errorTemplate);
 
-const showErrorMessage = () => {
-  showMessage(errorTemplate, '.error__button');
-};
-
-export { showSuccessMessage, showErrorMessage };
+export { showSuccessAlert, showErrorAlert };
