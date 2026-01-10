@@ -1,5 +1,8 @@
 import { isEscapeKey } from './util.js';
 
+const COMMENTS_CHUNK = 5;
+const AVATAR_MEASURE = 35;
+
 const modalWindow = document.querySelector('.big-picture');
 const modalImage = modalWindow.querySelector('.big-picture__img img');
 const likeCounter = modalWindow.querySelector('.likes-count');
@@ -10,17 +13,14 @@ const imageDescription = modalWindow.querySelector('.social__caption');
 const visibleCounter = modalWindow.querySelector('.social__comment-shown-count');
 const totalCounter = modalWindow.querySelector('.social__comment-total-count');
 
-const loadMoreBtn = modalWindow.querySelector('.comments-loader');
-const closeBtn = modalWindow.querySelector('.big-picture__cancel');
+const loadMoreButton = modalWindow.querySelector('.comments-loader');
+const closeButton = modalWindow.querySelector('.big-picture__cancel');
 const documentBody = document.body;
-
-const COMMENTS_CHUNK = 5;
-const AVATAR_MEASURE = 35;
 
 let commentsList = [];
 let shownComments = 0;
 
-let escapePressHandler = null;
+let onDocumentKeydown = null;
 
 const buildCommentItem = (commentInfo) => {
   const commentElement = document.createElement('li');
@@ -54,10 +54,10 @@ const updateCommentsView = () => {
   visibleCounter.textContent = String(shownComments);
   totalCounter.textContent = String(commentsList.length);
 
-  loadMoreBtn.classList.toggle('hidden', shownComments >= commentsList.length);
+  loadMoreButton.classList.toggle('hidden', shownComments >= commentsList.length);
 };
 
-const handleLoadMoreClick = () => {
+const onLoadMoreButtonClick = () => {
   shownComments = Math.min(shownComments + COMMENTS_CHUNK, commentsList.length);
   updateCommentsView();
 };
@@ -66,12 +66,12 @@ const hideImageModal = () => {
   modalWindow.classList.add('hidden');
   documentBody.classList.remove('modal-open');
 
-  if (escapePressHandler) {
-    document.removeEventListener('keydown', escapePressHandler);
-    escapePressHandler = null;
+  if (onDocumentKeydown) {
+    document.removeEventListener('keydown', onDocumentKeydown);
+    onDocumentKeydown = null;
   }
 
-  loadMoreBtn.removeEventListener('click', handleLoadMoreClick);
+  loadMoreButton.removeEventListener('click', onLoadMoreButtonClick);
 };
 
 const displayFullImage = (photoData) => {
@@ -89,23 +89,24 @@ const displayFullImage = (photoData) => {
 
   updateCommentsView();
 
-  escapePressHandler = (event) => {
-    if (isEscapeKey(event)) {
-      event.preventDefault();
+  onDocumentKeydown = (evt) => {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
       hideImageModal();
     }
   };
 
-  document.addEventListener('keydown', escapePressHandler);
-  loadMoreBtn.addEventListener('click', handleLoadMoreClick);
+  document.addEventListener('keydown', onDocumentKeydown);
+  loadMoreButton.addEventListener('click', onLoadMoreButtonClick);
 };
 
-const closeModal = (event) => {
-  event.preventDefault();
+const onCloseButtonClick = (evt) => {
+  evt.preventDefault();
   hideImageModal();
 };
 
-closeBtn.addEventListener('click', closeModal);
+closeButton.addEventListener('click', onCloseButtonClick);
 
 export { displayFullImage };
+
 

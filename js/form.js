@@ -9,7 +9,7 @@ const ALLOWED_FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const uploadForm = document.querySelector('.img-upload__form');
 const fileInput = uploadForm.querySelector('.img-upload__input');
 const editPanel = uploadForm.querySelector('.img-upload__overlay');
-const cancelBtn = uploadForm.querySelector('.img-upload__cancel');
+const cancelButton = uploadForm.querySelector('.img-upload__cancel');
 const hashtagField = uploadForm.querySelector('.text__hashtags');
 const commentField = uploadForm.querySelector('.text__description');
 const submitBtn = uploadForm.querySelector('.img-upload__submit');
@@ -117,7 +117,7 @@ const openEditor = () => {
   document.addEventListener('keydown', escapeKeyHandler);
 };
 
-const handleFileSelect = () => {
+const fileInputChangeHandler = () => {
   const selectedFile = fileInput.files && fileInput.files[0];
   if (!selectedFile) {
     return;
@@ -133,7 +133,7 @@ const handleFileSelect = () => {
   openEditor();
 };
 
-const handleCancelClick = (event) => {
+const cancelButtonClickHandler = (event) => {
   event.preventDefault();
   closeEditor({ reset: true });
 };
@@ -143,7 +143,7 @@ const toggleSubmitButton = (isDisabled) => {
   submitBtn.textContent = isDisabled ? 'Отправляю...' : 'Опубликовать';
 };
 
-const handleFormSubmit = (event) => {
+const uploadFormSubmitHandler = (event) => {
   event.preventDefault();
 
   if (!formValidator.validate()) {
@@ -165,6 +165,6 @@ const handleFormSubmit = (event) => {
     });
 };
 
-fileInput.addEventListener('change', handleFileSelect);
-cancelBtn.addEventListener('click', handleCancelClick);
-uploadForm.addEventListener('submit', handleFormSubmit);
+fileInput.addEventListener('change', fileInputChangeHandler);
+cancelButton.addEventListener('click', cancelButtonClickHandler);
+uploadForm.addEventListener('submit', uploadFormSubmitHandler);

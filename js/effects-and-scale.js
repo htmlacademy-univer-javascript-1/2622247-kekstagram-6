@@ -62,18 +62,18 @@ const initImageEditor = ({
     previewImage.style.transform = `scale(${value / 100})`;
   };
 
-  const onScaleDown = () => {
+  const onScaleDownButtonChange = () => {
     const newValue = Math.max(ScaleConfig.MIN, getCurrentScale() - ScaleConfig.STEP);
     applyScaling(newValue);
   };
 
-  const onScaleUp = () => {
+  const onScaleUpButtonChange = () => {
     const newValue = Math.min(ScaleConfig.MAX, getCurrentScale() + ScaleConfig.STEP);
     applyScaling(newValue);
   };
 
-  scaleDownBtn.addEventListener('click', onScaleDown);
-  scaleUpBtn.addEventListener('click', onScaleUp);
+  scaleDownBtn.addEventListener('click', onScaleDownButtonChange);
+  scaleUpBtn.addEventListener('click', onScaleUpButtonChange);
 
   let activeFilter = FilterPresets.none;
 

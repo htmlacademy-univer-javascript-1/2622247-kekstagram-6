@@ -46,7 +46,7 @@ const initPhotoFilters = (originalPhotos) => {
     renderPhotos(filteredPhotos);
   }, FILTER_DELAY);
 
-  const handleFilterClick = (event) => {
+  const filterFormChangeHandler = (event) => {
     const clickedButton = event.target.closest('.img-filters__button');
     if (!clickedButton) {
       return;
@@ -71,7 +71,7 @@ const initPhotoFilters = (originalPhotos) => {
     }
   };
 
-  filterForm.addEventListener('click', handleFilterClick);
+  filterForm.addEventListener('click', filterFormChangeHandler);
 };
 
 export { showFilterPanel, initPhotoFilters };
